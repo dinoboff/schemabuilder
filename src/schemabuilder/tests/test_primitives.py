@@ -84,6 +84,13 @@ class TestStr(utils.TestCase):
             s.to_dict()
         )
 
+    def test_format(self):
+        s = primitives.Str(format="email")
+        self.assertEqual(
+            {"type": "string", "format": "email"},
+            s.to_dict()
+        )
+
 
 class TestNumber(utils.TestCase):
 

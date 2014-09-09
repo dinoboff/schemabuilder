@@ -29,6 +29,7 @@ class Generic(object):
         required=False,
         dependencies=None,
         type=None,
+        format=None,
         one_of=None,
         all_of=None,
         any_of=None,
@@ -39,6 +40,7 @@ class Generic(object):
         self.default = default
         self.enum = enum
         self.type = type
+        self.format = format
         self.one_of = one_of
         self.all_of = all_of
         self.any_of = any_of
@@ -97,7 +99,6 @@ class Generic(object):
                 dest.append(v.to_dict())
             else:
                 dest.append(v)
-
 
 
 class Str(Generic):
