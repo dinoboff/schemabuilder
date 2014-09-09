@@ -56,6 +56,13 @@ class TestGeneric(utils.TestCase):
             generic.to_dict()
         )
 
+    def test_copy(self):
+        generic_1 = primitives.Generic()
+        generic_2 = generic_1(default="Guest")
+        self.assertIsNot(generic_1, generic_2)
+        self.assertIsNone(generic_1.default)
+        self.assertEqual("Guest", generic_2.default)
+
 
 class TestStr(utils.TestCase):
 

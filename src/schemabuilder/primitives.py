@@ -3,6 +3,7 @@
 
 """
 import collections
+import copy
 
 
 def _to_camel_case(s):
@@ -20,7 +21,10 @@ class Generic(object):
 
     """
 
-    def __init__(
+    def __init__(self, **kw):
+        self._update(**kw)
+
+    def _update(
         self,
         desc=None,
         title=None,
@@ -53,6 +57,11 @@ class Generic(object):
                 self.type = list(types)
             else:
                 self.type = [self.type, "null"]
+
+    def __call__(self, **kw):
+        generic = copy.copy(self)
+        generic._update(**kw)
+        return generic
 
     def to_dict(self):
         result = {}
@@ -107,9 +116,9 @@ class Str(Generic):
 
     """
 
-    def __init__(self, min=None, max=None, pattern=None, **kw):
+    def _update(self, min=None, max=None, pattern=None, **kw):
         kw.setdefault("type", "string")
-        super(Str, self).__init__(**kw)
+        super(Str, self)._update(**kw)
         self.pattern = pattern
         if min is not None:
             self.min_length = int(min)
@@ -123,7 +132,7 @@ class Number(Generic):
     """
     _base_type = float
 
-    def __init__(
+    def _update(
         self,
         min=None,
         max=None,
@@ -133,7 +142,7 @@ class Number(Generic):
         **kw
     ):
         kw.setdefault("type", "number")
-        super(Number, self).__init__(**kw)
+        super(Number, self)._update(**kw)
         if multiple_of is not None:
             self.multiple_of = self._base_type(multiple_of)
         if min is not None:
@@ -152,18 +161,18 @@ class Int(Number):
     """
     _base_type = int
 
-    def __init__(self, **kw):
+    def _update(self, **kw):
         kw.setdefault("type", "integer")
-        super(Int, self).__init__(**kw)
+        super(Int, self)._update(**kw)
 
 
 class Bool(Generic):
     """Boolean type
 
     """
-    def __init__(self, **kw):
+    def _update(self, **kw):
         kw.setdefault("type", "boolean")
-        super(Bool, self).__init__(**kw)
+        super(Bool, self)._update(**kw)
 
 
 class Object(Generic):
@@ -171,7 +180,7 @@ class Object(Generic):
 
     """
 
-    def __init__(self,
+    def _update(self,
         properties=None,
         pattern_properties=None,
         additional_properties=None,
@@ -181,7 +190,7 @@ class Object(Generic):
         **kw
     ):
         kw.setdefault("type", "object")
-        super(Object, self).__init__(**kw)
+        super(Object, self)._update(**kw)
 
         self.properties = properties
         self.pattern_properties = pattern_properties
@@ -218,7 +227,7 @@ class Array(Generic):
     """Array type.
 
     """
-    def __init__(
+    def _update(
         self,
         items=None,
         additional_items=None,
@@ -228,7 +237,7 @@ class Array(Generic):
         **kw
     ):
         kw.setdefault("type", "array")
-        super(Array, self).__init__(**kw)
+        super(Array, self)._update(**kw)
         self.type = "array"
         self.items = items
         self.min_items = min
