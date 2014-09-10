@@ -8,6 +8,10 @@ class TestGeneric(utils.TestCase):
         generic = primitives.Generic()
         self.assertEqual({}, generic.to_dict())
 
+    def test_id(self):
+        generic = primitives.Generic(id="#user")
+        self.assertEqual({"id": "#user"}, generic.to_dict())
+
     def test_desc(self):
         generic = primitives.Generic(desc="some schema definition")
         self.assertEqual({
