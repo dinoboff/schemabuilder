@@ -11,10 +11,14 @@ def _to_camel_case(s):
 class ToDictMixin(object):
     """Convert the object properties to a dictionary.
 
-    Recursively walk the dict and sequences properties to convert them.
+    Recursively walks the dict and sequences properties to convert them.
 
     """
     def to_dict(self):
+        """Return the schema as a `dict`, ready to be serialized by
+        :mod:`json`.
+
+        """
         result = {}
         stack = collections.deque()
         stack.append((result, self.__dict__))

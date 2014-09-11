@@ -1,5 +1,5 @@
-from schemabuilder import primitives
-from schemabuilder.tests import utils
+from .. import primitives
+from . import utils
 
 
 class TestGeneric(utils.TestCase):

@@ -4,14 +4,29 @@
 """
 import copy
 
-from schemabuilder import utils
+from . import utils
 
 
 class Generic(utils.ToDictMixin):
-    """Base class
+    """Base schema class
 
     Defines generic object with the default attribute most other json
-    object accept: description, title, default and enum.
+    object accept, including description, title, default or enum.
+
+    :param id: schema id.
+    :param desc: schema description.
+    :param title: schema title.
+    :param default: default value (ignored by most validator).
+    :param enum: list of valid value.
+    :param required: marks the schema as required.
+    :param format: value format (like `uri` or `email`).
+    :param type: schema type.
+    :param one_of: list of schema. The value must validate against one
+                   of them.
+    :param any_of: list of schema. The value must validate against one
+                   or many of the schema.
+    :param all_of: list of schema. The value must validate against all
+                   of them.
 
     """
 
@@ -64,6 +79,10 @@ class Str(Generic):
     """a String type with its optional min/max length and pattern
     attributes.
 
+    :param min: minimum length of the string.
+    :param max: maximum length of the string.
+    :param pattern: regex pattern the string should validate against.
+
     """
 
     def _update(self, min=None, max=None, pattern=None, **kw):
@@ -78,6 +97,12 @@ class Str(Generic):
 
 class Number(Generic):
     """A number type with its multipleOf and range attributes.
+
+    :param min: minimum valid value.
+    :param max: maximum valid value.
+    :param exclusive_min: should the minimum valid be exclusive.
+    :param exclusive_max: should the maximum valid be exclusive.
+    :param multiple_of: a value the number should be a multiple of.
 
     """
     _base_type = float
@@ -127,6 +152,18 @@ class Bool(Generic):
 
 class Object(Generic):
     """An object type.
+
+    :param properties: dict of properties, key -> property type.
+    :param pattern_properties: like properties, but the keys are defines
+                               by a regex pattern.
+
+    :param additional_properties: should there be any additional
+                                  properties?
+
+    :param min: minimum number of properties.
+    :param max: maximum number of properties.
+    :param required: list of properties names that are required.
+
 
     """
 
