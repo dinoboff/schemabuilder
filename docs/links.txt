@@ -1,0 +1,4 @@
+.. _jsonschema: http://python-jsonschema.readthedocs.org/en/latest/
+.. _setuptools: https://pypi.python.org/pypi/setuptools
+.. _JSON Schema: http://json-schema.org/
+.. _guide to schema type: http://spacetelescope.github.io/understanding-json-schema/reference/type.html

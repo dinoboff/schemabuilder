@@ -9,7 +9,7 @@ testArgs ?= -m unittest discover -b -t ${src} -s ${src}/schemabuilder/tests
 virtualenv ?= virtualenv
 
 
-.PHONY: coverage dev test
+.PHONY: coverage dev test docs
 
 .coverage: pyenv ${srcFiles}
 	${coverage} run --source=${src} ${testArgs}
@@ -18,6 +18,9 @@ coverage: .coverage
 	${coverage} report -m
 
 dev-setup: pyenv
+
+docs:
+	cd ./docs; make clean html
 
 pyenv: requirements.txt requirements-dev.txt
 	rm -rf pyenv
