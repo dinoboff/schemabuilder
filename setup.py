@@ -17,7 +17,7 @@ except ImportError:
 
 setup(
     name="schemabuilder",
-    version="0.2.0",
+    version="0.3.0",
     description="JSON schema definition helpers",
     author="Damien Lebrun",
     author_email="dinoboff@gmail.com",

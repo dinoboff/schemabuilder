@@ -21,7 +21,12 @@ class ToDictMixin(object):
         """
         result = {}
         stack = collections.deque()
-        stack.append((result, self.__dict__))
+        stack.append(
+            (
+                result,
+                {_to_camel_case(k): v for k, v in self.__dict__.iteritems()},
+            )
+        )
         while stack:
             dest, source = stack.pop()
             if isinstance(dest, dict):
@@ -35,17 +40,16 @@ class ToDictMixin(object):
         for k, v in source.iteritems():
             if v is None or k[0] == "_":
                 continue
-            cck = _to_camel_case(k)
             if isinstance(v, dict):
-                dest[cck] = {}
-                stack.append((dest[cck], v,))
+                dest[k] = {}
+                stack.append((dest[k], v,))
             elif isinstance(v, (list, tuple,)):
-                dest[cck] = []
-                stack.append((dest[cck], v,))
+                dest[k] = []
+                stack.append((dest[k], v,))
             elif hasattr(v, "to_dict"):
-                dest[cck] = v.to_dict()
+                dest[k] = v.to_dict()
             else:
-                dest[cck] = v
+                dest[k] = v
 
     @staticmethod
     def _process_list(dest, source, stack):
