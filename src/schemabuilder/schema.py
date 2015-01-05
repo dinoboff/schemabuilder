@@ -44,6 +44,9 @@ class Schema(utils.ToDictMixin):
         """
         self.definitions[id] = schema
         self._schema = None
+        return self.ref(id)
+
+    def ref(self, id):
         return Ref(id, self)
 
     def ref_resolver(self):
