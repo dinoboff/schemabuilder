@@ -15,8 +15,9 @@ class Schema(utils.ToDictMixin):
     """
 
     def __init__(self, id=None, desc=None):
-        self.id = id
-        self.desc = desc
+        self._id = id
+        self._desc = desc
+        self._schema = None
         self.definitions = {}
 
     def to_dict(self):
@@ -25,6 +26,10 @@ class Schema(utils.ToDictMixin):
         """
         schema = super(Schema, self).to_dict()
         schema['$schema'] = "http://json-schema.org/draft-04/schema#"
+        if self._id:
+            schema['id'] = self._id
+        if self._desc:
+            schema['description'] = self._desc
         return schema
 
     def define(self, id, schema):
@@ -38,12 +43,23 @@ class Schema(utils.ToDictMixin):
 
         """
         self.definitions[id] = schema
+        self._schema = None
         return Ref(id, self)
 
     def ref_resolver(self):
-        return jsonschema.RefResolver.from_schema(self.to_dict())
+        if self._schema is None:
+            self._schema = self.to_dict()
+        return jsonschema.RefResolver.from_schema(self._schema)
 
     def validator(self, id):
+        """Create a validator for the current state of the schema.
+
+        Note: a validator (the resolver it's using) is not thread safe.
+
+        :param id: id of the schema in the list of definition.
+        :return: a validator.
+        :rtype: :class:`jsonschema.Draft4Validator`
+        """
         return jsonschema.Draft4Validator(
             {'$ref': '#/definitions/%s' % id},
             resolver=self.ref_resolver()

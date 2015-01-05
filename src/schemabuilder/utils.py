@@ -63,4 +63,3 @@ class ToDictMixin(object):
                 dest.append(v.to_dict())
             else:
                 dest.append(v)
-

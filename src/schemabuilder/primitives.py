@@ -167,7 +167,8 @@ class Object(Generic):
 
     """
 
-    def _update(self,
+    def _update(
+        self,
         properties=None,
         pattern_properties=None,
         additional_properties=None,
@@ -233,4 +234,3 @@ class Array(Generic):
             self.additional_items = bool(additional_items)
         if is_set is not None:
             self.unique_items = is_set
-
