@@ -6,7 +6,7 @@ try:
     with open("./requirements.txt") as r:
         extras = {
             "install_requires": [
-                l.strip()  for l in  r.readlines() if l.strip()
+                l.strip() for l in  r.readlines() if l.strip()
             ]
         }
 except ImportError:
@@ -17,7 +17,7 @@ except ImportError:
 
 setup(
     name="schemabuilder",
-    version="0.1.0",
+    version="0.1.1",
     description="JSON schema definition helpers",
     author="Damien Lebrun",
     author_email="dinoboff@gmail.com",
